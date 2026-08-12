@@ -42,8 +42,16 @@ class RNGestureHandlerDetectorViewManager :
     view.setVirtualChildren(value)
   }
 
+  override fun prepareToRecycleView(
+    reactContext: ThemedReactContext,
+    view: RNGestureHandlerDetectorView,
+  ): RNGestureHandlerDetectorView? {
+    view.resetForRecycle()
+    return super.prepareToRecycleView(reactContext, view)
+  }
+
   override fun onDropViewInstance(view: RNGestureHandlerDetectorView) {
-    view.detachAllHandlers()
+    view.resetForRecycle()
     super.onDropViewInstance(view)
   }
 

@@ -260,6 +260,13 @@ class RNGestureHandlerDetectorView(context: Context) : ReactViewGroup(context) {
     nativeHandlers.clear()
   }
 
+  fun resetForRecycle() {
+    detachAllHandlers()
+    handlersToAttach = emptyList()
+    virtualChildrenToAttach = emptyList()
+    moduleId = -1
+  }
+
   fun recordHandlerIfNotPresent(handler: GestureHandler) {
     RNGestureHandlerRootView.findGestureHandlerRootView(this)?.recordHandlerIfNotPresent(handler)
   }

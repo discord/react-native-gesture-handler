@@ -230,8 +230,11 @@ class RNGestureHandlerDetectorView(context: Context) : ReactViewGroup(context) {
   }
 
   private fun detachNativeGestureHandlers() {
-    val registry = RNGestureHandlerModule.registries[moduleId]
-      ?: throw Exception("Tried to access a non-existent registry")
+    // Fabric can remove children before moduleId is set, or after the module
+    // registry has already been torn down. Detach is best-effort — attach
+    // paths still throw. Matches detachAllHandlers() and iOS, which no-ops
+    // when the manager is missing.
+    val registry = RNGestureHandlerModule.registries[moduleId] ?: return
 
     for (tag in nativeHandlers) {
       if (!attachedHandlers.contains(tag)) {
